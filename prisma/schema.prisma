@@ -6,10 +6,162 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String         @id @default(uuid())
+  username        String         @unique
+  email           String         @unique
+  passwordHash    String
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  lastLoginAt     DateTime?
+}
+
+model UserProfile {
+  id          String    @id @default(uuid())
+  nickname    String?
+  avatarUrl   String?
+  bio         String?
+
+  userId      String    @unique
+}
+
+enum GameMode {
+  Normal
+  Ranked
+}
+
+model UserStats {
+  id          String        @id @default(uuid())
+  gameMode    GameMode
+
+  gamesPlayed Int           @default(0)
+  wins        Int           @default(0)
+  losses      Int           @default(0)
+  draws       Int           @default(0)
+
+  eloRating   Int           @default(1000)
+  mmr         Int           @default(1000)
+  tier        String        @default("BRONZE")
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  userId      String
+
+  @@unique([userId, gameMode])
+}
+
+model UserCharacter {
+  id              String      @id @default(uuid())
+  nickname        String?
+  createdAt       DateTime    @default(now())
+ 
+  userId          String
+  characterId     String
+  activeSkinId    String?
+}
+
+model UserSkin {
+  id          String      @id @default(uuid())
+  acquiredAt  DateTime    @default(now())
+  expiresAt   DateTime?
+  
+  userId      String
+  skinId      String
+}
+
+enum Location {
+  None
+  WaitingRoom
+  GameRoom
+}
+
+model UserLocation {
+  id             String     @id @unique
+  location       Location
+  locationDetail Json
+  timestamp      DateTime   @default(now())
+}
+
+model Character {
+  id                String   @id @default(uuid())
+  code              String   @unique
+  name              String
+  speed             Float
+  defaultSkinCode   String
+}
+
+model Skin {
+  id            String    @id @default(uuid())
+  code          String    @unique
+  name          String
+}
+
+model Match {
+  id           String     @id @unique
+  matchType    GameMode
+  subGameId    String
+  mapId        String
+  targetRating Int
+  createdAt    DateTime   @default(now())
+  playerList   String[]
+}
+
+model MatchmakingTicket {
+  id         String     @id @unique
+  creator    String
+  matchType  GameMode
+  subGameId  String
+  mapId      String
+  rating     Int
+  createdAt  DateTime   @default(now())
+}
+
+enum WaitingRoomStatus {
+  None
+}
+
+model WaitingRoom {
+  id                     String             @id @unique
+  matchType              GameMode
+  subGameId              String
+  mapId                  String
+  targetRating           Int
+  createdAt              DateTime           @default(now())
+  matchmakingTicketList  String[]
+  maxWaitingTime         Int
+  minPlayerCount         Int
+  maxPlayerCount         Int
+  status                 WaitingRoomStatus
+}
+
+enum RoomStatus {
+  None
+  CreatingRunner
+  RunnerCreated
+  Initializing
+  WaitingForPlayers
+  StartingGame
+  GameInProgress
+  GameFinished
+  Closing
+  Closed
+  Error
+}
+
+model Room {
+  id            String      @id @unique
+  matchId       String      @unique
+  createdAt     DateTime    @default(now())
+  status        RoomStatus
+  ip            String
+  port          Int
+  lastHeartbeat DateTime
 }
