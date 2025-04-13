@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+      "module": "commonjs",
+      "target": "es6",
+      "lib": ["es6"],
+      "pretty": true,
+      "sourceMap": true,
+      "outDir": "dist",
+      "strict": true,
+      "esModuleInterop": true,
+      "experimentalDecorators": true,
+      "strictPropertyInitialization": false,
+      "moduleResolution": "node",
+      "baseUrl": ".",
+      "paths": {
+          "@src/*": ["src/*"],
+          "@utils/*": ["src/utils/*"],
+          "@databases/*": ["src/databases/*"],
+          "@loaders/*": ["src/loaders/*"],
+          "@config": ["src/config"],
+        }
+  },
+  "include": [
+      "src/**/*"
+  ],
+  "exclude": [
+      "node_modules",
+      "src/logs"
+  ]
+}

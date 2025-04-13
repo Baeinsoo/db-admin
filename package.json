@@ -1,0 +1,22 @@
+{
+  "name": "db-admin",
+  "version": "0.0.0",
+  "description": "db-admin",
+  "scripts": {
+    "build": "tsc --build && tsc-alias",
+    "clean": "tsc --build --clean",
+    "start": "node dist/main",
+    "buildNstart": "npm run build && npm run start"
+  },
+  "author": "",
+  "dependencies": {
+    "@prisma/client": "^6.6.0",
+    "csv-parse": "^5.6.0",
+    "dotenv": "^16.5.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.6.0",
+    "tsc-alias": "^1.8.15",
+    "typescript": "^5.8.3"
+  }
+}
