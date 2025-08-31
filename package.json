@@ -4,7 +4,8 @@
   "description": "db-admin",
   "scripts": {
     "migrate": "prisma migrate dev",
-    "generate": "prisma generate"
+    "generate": "prisma generate",
+    "seed": "ts-node src/seed.ts"
   },
   "author": "",
   "dependencies": {
