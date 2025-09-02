@@ -94,7 +94,7 @@ async function importCharacters(filePath: string): Promise<void> {
 async function main() {
   console.log('🌱 Starting seed...');
     try {
-        const tableDir = path.resolve(__dirname, '../../tables');
+        const tableDir = path.resolve(process.cwd(), 'tables');
         const skinPath = path.join(tableDir, 'Skin.csv');
         const characterPath = path.join(tableDir, 'Character.csv');
 
